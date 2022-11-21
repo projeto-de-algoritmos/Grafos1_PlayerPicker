@@ -221,7 +221,7 @@ function startSearch(){
     } else {
         
         let message = document.querySelector('#messages');
-        message.innerHTML = 'for search to function , the bot needs a starting  and ending point!!';
+        message.innerHTML = 'para tocar a bola, preciso saber onde começa e onde termina!';
         return;
     }
 
