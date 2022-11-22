@@ -4,6 +4,10 @@ let startPoint = null;
 let endPoint = null;
 let walls = new Set();
 
+const ROW_SIZE = 20;
+const TOTAL_SIZE = ROW_SIZE * ROW_SIZE;
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 // defining node
 class Node {
     constructor(element) {
@@ -31,7 +35,7 @@ function loadGrid() {
     walls.clear();
     editmode = "start";
 
-    let message = document.querySelector("#messages");
+    message = document.querySelector("#messages");
     message.innerHTML = "";
 
     document.querySelector("#end-button").disabled = true;
@@ -50,8 +54,7 @@ function loadGrid() {
     document.querySelector("#start-search-button").style.display = "inline-block";
     document.querySelector("#reset-button").style.display = "none";
 
-    let i = 0;
-    for (i = 0; i < 100; i++) {
+    for (let i = 0; i < TOTAL_SIZE; i++) {
         let grid_div = document.createElement("div")
         grid_div.id = `hive_${i}`;
         grid_div.classList = "block";
@@ -117,32 +120,23 @@ function addToList(grid_div) {
     }
 }
 
-// check function 
-function checkRequirements() {
-    if (startPoint === null || endPoint === null) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
 // neighbour finders
 function neighbors(x) {
     let neigh = [];
     // cima 
-    if (x - 10 > -1) {
-        neigh.push(x - 10);
+    if (x - ROW_SIZE > -1) {
+        neigh.push(x - ROW_SIZE);
     }
     // baixo
-    if (x + 10 < 100) {
-        neigh.push(x + 10);
+    if (x + ROW_SIZE < TOTAL_SIZE) {
+        neigh.push(x + ROW_SIZE);
     }
     // esquerda
-    if (parseInt((x + 1) / 10) === parseInt(x / 10) && ((x + 1) > -1 && (x + 1) < 100)) {
+    if (parseInt((x + 1) / ROW_SIZE) === parseInt(x / ROW_SIZE) && ((x + 1) > -1 && (x + 1) < TOTAL_SIZE)) {
         neigh.push(x + 1);
     }
     // direita
-    if (parseInt((x - 1) / 10) === parseInt(x / 10) && ((x - 1) > -1 && (x - 1) < 100)) {
+    if (parseInt((x - 1) / ROW_SIZE) === parseInt(x / ROW_SIZE) && ((x - 1) > -1 && (x - 1) < TOTAL_SIZE)) {
         neigh.push(x - 1);
     }
     return neigh;
@@ -150,14 +144,14 @@ function neighbors(x) {
 
 // dfs search function
 function startDFS() {
-    let que = [];
+    let query = [];
     let visited = new Set();
     let start = new Node(startPoint);
-    que.push(start);
+    query.push(start);
     visited.add(startPoint)
     let sol = null
-    while (que.length !== 0) {
-        let e = que.shift();
+    while (query.length !== 0) {
+        let e = query.shift();
         if (e.element === endPoint) {
             sol = e;
             break;
@@ -167,7 +161,7 @@ function startDFS() {
             if (!visited.has(element) && !walls.has(element)) {
                 let z = new Node(element);
                 z.parent = e;
-                que.push(z);
+                query.push(z);
                 visited.add(element);
             }
         })
@@ -180,7 +174,7 @@ function startDFS() {
 }
 
 // path printer function
-function printSolution(sol) {
+async function printSolution(sol) {
     document.querySelector("#messages").innerHTML = "Driblei geral!";
 
     document.querySelector("#start-button").style.display = "none";
@@ -194,11 +188,16 @@ function printSolution(sol) {
         solution.push(sol.element);
         sol = sol.parent;
     }
-    let i;
-    for (i = 0; i < solution.length; i++) {
+    for (let i = solution.length - 1; i > 0; i--) {
+        await delay(50);
         document.querySelector(`#hive_${solution[i]}`).classList = "path";
     }
     document.querySelector(`#hive_${endPoint}`).classList = "block-closed-end";
+}
+
+// check function 
+function checkRequirements() {
+    return startPoint === null || endPoint === null ? false : true;
 }
 
 // search driver function.
