@@ -1,5 +1,5 @@
 // globals
-let editmode = 'start';
+let editmode = "start";
 let startPoint = null;
 let endPoint = null;
 let walls = new Set();
@@ -13,82 +13,103 @@ class Node {
 }
 
 // starter function
-document.addEventListener('DOMContentLoaded', () => {
-    loadgrid();
-    document.querySelector('#start-button').addEventListener('click', () => { editmode = 'start'; });
-    document.querySelector('#end-button').addEventListener('click', () => { editmode = 'end'; });
-    document.querySelector('#block-button').addEventListener('click', () => { editmode = 'wall'; });
-    document.querySelector('#start-search-button').addEventListener('click', () => startSearch());
-    document.querySelector('#reset-button').addEventListener('click', () => loadgrid());
-})
+document.addEventListener("DOMContentLoaded", () => {
+    loadGrid();
+    document.querySelector("#start-button").addEventListener("click", () => { editmode = "start"; });
+    document.querySelector("#end-button").addEventListener("click", () => { editmode = "end"; });
+    document.querySelector("#block-button").addEventListener("click", () => { editmode = "wall"; });
+    document.querySelector("#start-search-button").addEventListener("click", () => startSearch());
+    document.querySelector("#reset-button").addEventListener("click", () => loadGrid());
+});
 
 // load grid function 
-function loadgrid() {
-    console.log(editmode)
-    main = document.querySelector('#main');
-    main.innerHTML = '';
+function loadGrid() {
+    main = document.querySelector("#main");
+    main.innerHTML = "";
     startPoint = null;
     endPoint = null;
     walls.clear();
-    editmode = 'start';
+    editmode = "start";
+
+    document.querySelector("#end-button").disabled = true;
+    document.querySelector("#block-button").disabled = true;
+    document.querySelector("#start-search-button").disabled = true;
+
+    document.querySelector("#start-button").classList.remove("btn-success");;
+    document.querySelector("#end-button").classList.remove("btn-success");;
+    document.querySelector("#block-button").classList.remove("btn-success");;
+    document.querySelector("#start-search-button").classList.remove("btn-success");;
+    document.querySelector("#reset-button").classList.remove("btn-success");;
+
+    document.querySelector("#start-button").style.display = "inline-block";
+    document.querySelector("#end-button").style.display = "inline-block";
+    document.querySelector("#block-button").style.display = "inline-block";
+    document.querySelector("#start-search-button").style.display = "inline-block";
+    document.querySelector("#reset-button").style.display = "none";
 
     let i = 0;
     for (i = 0; i < 100; i++) {
-        let grid_div = document.createElement('div')
+        let grid_div = document.createElement("div")
         grid_div.id = `hive_${i}`;
-        grid_div.classList = 'block';
-        grid_div.addEventListener('click', () => addToList(grid_div));
+        grid_div.classList = "block";
+        grid_div.addEventListener("click", () => addToList(grid_div));
         main.append(grid_div);
     }
 }
 
 // grid construction function
 function addToList(grid_div) {
-    let item = parseInt(grid_div.id.split('_')[1]);
-    let message = document.querySelector('#messages');
-    if (editmode === 'start') {
+    let item = parseInt(grid_div.id.split("_")[1]);
+    let message = document.querySelector("#messages");
+    if (editmode === "start") {
         if (startPoint === null) {
             if (walls.has(item)) {
-                message.innerHTML = 'ponto de partida não pode ser uma barreira.';
+                message.innerHTML = "ponto de partida não pode ser uma barreira.";
             } else {
-                grid_div.classList.toggle('block-closed-start');
-                message.innerHTML = 'ponto de partida marcado!';
+                grid_div.classList.toggle("block-closed-start");
+                message.innerHTML = "ponto de partida marcado!";
                 startPoint = item;
+                document.querySelector("#start-button").classList.add("btn-success");
+                document.querySelector("#end-button").disabled = false;
             }
         } else if (startPoint === item) {
-            message.innerHTML = 'ponto de partida removido!';
-            grid_div.classList.toggle('block-closed-start');
+            message.innerHTML = "ponto de partida removido!";
+            grid_div.classList.toggle("block-closed-start");
             startPoint = null;
         } else {
-            message.innerHTML = 'ponto de partida já marcado!'
+            message.innerHTML = "ponto de partida já marcado!"
         }
-    } else if (editmode === 'end') {
+    } else if (editmode === "end") {
         if (endPoint === null) {
             if (walls.has(item)) {
-                message.innerHTML = 'ponto de chegada não pode ser uma barreira!';
+                message.innerHTML = "ponto de chegada não pode ser uma barreira!";
+                document.querySelector("#end-button").classList.remove("btn-success");
             } else {
-                grid_div.classList.toggle('block-closed-end');
-                message.innerHTML = 'ponto de chegada marcado!'
+                grid_div.classList.toggle("block-closed-end");
+                message.innerHTML = "ponto de chegada marcado!"
                 endPoint = item;
+                document.querySelector("#end-button").classList.add("btn-success");
+                document.querySelector("#block-button").disabled = false;
             }
         } else if (endPoint === item) {
-            message.innerHTML = 'ponto de chegada removido!';
-            grid_div.classList.toggle('block-closed-end');
+            message.innerHTML = "ponto de chegada removido!";
+            grid_div.classList.toggle("block-closed-end");
             endPoint = null;
+            document.querySelector("#end-button").classList.remove("btn-success");
         } else {
-            message.innerHTML = 'ponto de chegada já marcado!'
+            message.innerHTML = "ponto de chegada já marcado!"
         }
-    } else {
+    } else if (editmode === "wall") {
         if (item === startPoint || item === endPoint) {
-            message.innerHTML = 'ponto de partida nao pode ser uma barreira!';
+            message.innerHTML = "ponto de partida nao pode ser uma barreira!";
         } else if (walls.has(item)) {
-            grid_div.classList.toggle('block-closed-wall');
-            console.log(grid_div.classList)
+            grid_div.classList.toggle("block-closed-wall");
             walls.delete(item);
         } else {
-            grid_div.classList.toggle('block-closed-wall');
-            console.log(grid_div.classList)
+            grid_div.classList.toggle("block-closed-wall");
             walls.add(item);
+            document.querySelector("#block-button").classList.add("btn-success");
+            document.querySelector("#start-search-button").disabled = false;
         }
     }
 }
@@ -105,19 +126,19 @@ function checkRequirements() {
 // neighbour finders
 function neighbors(x) {
     let neigh = [];
-    // up
+    // cima 
     if (x - 10 > -1) {
         neigh.push(x - 10);
     }
-    // down
+    // baixo
     if (x + 10 < 100) {
         neigh.push(x + 10);
     }
-    // left
+    // esquerda
     if (parseInt((x + 1) / 10) === parseInt(x / 10) && ((x + 1) > -1 && (x + 1) < 100)) {
         neigh.push(x + 1);
     }
-    // right
+    // direita
     if (parseInt((x - 1) / 10) === parseInt(x / 10) && ((x - 1) > -1 && (x - 1) < 100)) {
         neigh.push(x - 1);
     }
@@ -133,9 +154,7 @@ function startDFS() {
     visited.add(startPoint)
     let sol = null
     while (que.length !== 0) {
-        //console.log(que)
         let e = que.shift();
-        //console.log(e.element)
         if (e.element === endPoint) {
             sol = e;
             break;
@@ -151,16 +170,22 @@ function startDFS() {
         })
     }
     if (sol !== null) {
-        printSOl(sol)
+        printSolution(sol)
     } else {
-        console.log('no path found');
-        document.querySelector('#messages').innerHTML = 'Não tem caminho possível';
+        document.querySelector("#messages").innerHTML = "Não tem caminho possível";
     }
 }
 
 // path printer function
-function printSOl(sol) {
-    document.querySelector('#messages').innerHTML = 'Achei o caminho!';
+function printSolution(sol) {
+    document.querySelector("#messages").innerHTML = "Achei o caminho!";
+
+    document.querySelector("#start-button").style.display = "none";
+    document.querySelector("#end-button").style.display = "none";
+    document.querySelector("#block-button").style.display = "none";
+    document.querySelector("#start-search-button").style.display = "none";
+    document.querySelector("#reset-button").style.display = "inline-block";
+
     let solution = [];
     while (sol.parent !== null) {
         solution.push(sol.element);
@@ -168,9 +193,9 @@ function printSOl(sol) {
     }
     let i;
     for (i = 0; i < solution.length; i++) {
-        document.querySelector(`#hive_${solution[i]}`).classList = 'path';
+        document.querySelector(`#hive_${solution[i]}`).classList = "path";
     }
-    document.querySelector(`#hive_${endPoint}`).classList = 'block-closed-end';
+    document.querySelector(`#hive_${endPoint}`).classList = "block-closed-end";
 }
 
 // old path clearing function
@@ -179,26 +204,22 @@ function clearoldpath() {
         if (i == startPoint || i == endPoint) {
             continue;
         } else {
-            document.querySelector(`#hive_${i}`).classList = 'block';
+            document.querySelector(`#hive_${i}`).classList = "block";
         }
     }
-    let s = Array.from(walls);
-    for (let d = 0; d < s.length; d++) {
-        document.querySelector(`#hive_${s[d]}`).classList.toggle('block-closed-wall');
-        console.log(document.querySelector(`#hive_${s[d]}`).classList)
-    }
-    document.querySelector(`#hive_${endPoint}`).classList = 'block-closed-end';
+    document.querySelector(`#hive_${endPoint}`).classList = "block-closed-end";
 }
 
 // search driver function.
 function startSearch() {
+    editmode = 'none';
     if (checkRequirements() === true) {
         clearoldpath();
-        document.querySelector('#messages').innerHTML = 'Working';
+        document.querySelector("#messages").innerHTML = "Working";
         startDFS();
     } else {
-        let message = document.querySelector('#messages');
-        message.innerHTML = 'para tocar a bola, preciso saber onde começa e onde termina!';
+        let message = document.querySelector("#messages");
+        message.innerHTML = "para tocar a bola, preciso saber onde começa e onde termina!";
         return;
     }
 }

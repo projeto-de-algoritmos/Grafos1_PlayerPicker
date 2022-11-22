@@ -1,10 +1,23 @@
+body {
+    color: white;
+    background-color: #52031B;
+}
+
 .main {
     display: grid;
-    grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
-    grid-template-rows: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+    grid-template-columns: repeat(10, 50px);
+    grid-template-rows: repeat(10, 50px);
     grid-auto-flow: row;
     justify-content: center;
     margin-bottom: 100px;
+}
+
+section {
+    padding: 20px 40px;
+}
+
+h1 {
+    margin-bottom: 16px;
 }
 
 .block {
@@ -31,17 +44,12 @@
 .block-closed-end {
     width: 48px;
     height: 48px;
-    background-color: floralwhite;
+    background-color: yellow;
     margin: 1px 1px 1px 1px;
 }
 
-.button {
+.btn {
     margin: 4px;
-    padding: 2px;
-    color: white;
-    background-color: crimson;
-    text-align: center;
-    border-radius: 10px;
 }
 
 .path {
@@ -52,10 +60,10 @@
 }
 
 .container {
-    display: grid;
     justify-content: center;
     align-items: center;
-    margin-top: 40px;
+    text-align: center;
+    margin-bottom: 32px;
 }
 
 h1 {
