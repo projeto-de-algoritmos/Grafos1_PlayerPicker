@@ -31,6 +31,9 @@ function loadGrid() {
     walls.clear();
     editmode = "start";
 
+    let message = document.querySelector("#messages");
+    message.innerHTML = "";
+
     document.querySelector("#end-button").disabled = true;
     document.querySelector("#block-button").disabled = true;
     document.querySelector("#start-search-button").disabled = true;
@@ -172,13 +175,13 @@ function startDFS() {
     if (sol !== null) {
         printSolution(sol)
     } else {
-        document.querySelector("#messages").innerHTML = "Não tem caminho possível";
+        document.querySelector("#messages").innerHTML = "Não dá pra driblar isso aí!";
     }
 }
 
 // path printer function
 function printSolution(sol) {
-    document.querySelector("#messages").innerHTML = "Achei o caminho!";
+    document.querySelector("#messages").innerHTML = "Driblei geral!";
 
     document.querySelector("#start-button").style.display = "none";
     document.querySelector("#end-button").style.display = "none";
@@ -198,28 +201,11 @@ function printSolution(sol) {
     document.querySelector(`#hive_${endPoint}`).classList = "block-closed-end";
 }
 
-// old path clearing function
-function clearoldpath() {
-    for (let i = 0; i < 10; i++) {
-        if (i == startPoint || i == endPoint) {
-            continue;
-        } else {
-            document.querySelector(`#hive_${i}`).classList = "block";
-        }
-    }
-    document.querySelector(`#hive_${endPoint}`).classList = "block-closed-end";
-}
-
 // search driver function.
 function startSearch() {
     editmode = 'none';
     if (checkRequirements() === true) {
-        clearoldpath();
-        document.querySelector("#messages").innerHTML = "Working";
+        document.querySelector("#messages").innerHTML = "Calculando drible...";
         startDFS();
-    } else {
-        let message = document.querySelector("#messages");
-        message.innerHTML = "para tocar a bola, preciso saber onde começa e onde termina!";
-        return;
     }
 }
