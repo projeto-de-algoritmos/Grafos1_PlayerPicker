@@ -10,7 +10,11 @@
 | 150011903 | [Igor Aragão](https://github.com/roginaldosemog)            |
 
 ## Sobre
-Descreva os objetivos do seu projeto e como ele funciona. 
+O nosso professor Tite está preparando os jogadores para o jogo contra a Sérvia, conhecida por sua bola parada! Para pegar os sérvios de surpresa, ele aprimorou as táticas para valorizar os dribles dos atacantes da Seleção.
+
+Existem boatos de que ele esteve utilizando o algoritmo desse site para auxiliar os jogadores a calcular a menor rota entre eles e o ponto onde devem chegar para obter um ataque efetivo, tudo isso desviando dos oponentes.
+
+O objetivo é chegar de um ponto ao outro do campo, passando pelas barreiras e treinando da melhor forma para vencer a Sérvia!
 
 ## Screenshots
 Adicione 3 ou mais screenshots do projeto em funcionamento.
