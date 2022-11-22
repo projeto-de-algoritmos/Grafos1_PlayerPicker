@@ -20,6 +20,8 @@ O objetivo é chegar de um ponto ao outro do campo, passando pelas barreiras e t
 Adicione 3 ou mais screenshots do projeto em funcionamento.
 
 **Linguagem**: Javascript<br>
+## Apresentação
+O vídeo para apresentação se encontra disponível para baixar [AQUI](https://drive.google.com/file/d/1enBjE7iqKg-tahRYLXqJ7FrtqUC17NT4/view?usp=sharing)
 
 ## Uso
 Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
